@@ -1,16 +1,979 @@
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toukan.ch</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+    <title>Toukan – Gestion des structures d'accueil</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --dark: #202A33;
+            --orange: #F4A13A;
+            --orange-dark: #DD8D27;
+            --text: #202A33;
+            --muted: #68727B;
+            --light: #F7F8F9;
+            --white: #FFFFFF;
+            --border: #E7EAED;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Manrope", sans-serif;
+            color: var(--text);
+            background: var(--white);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: min(1120px, 90%);
+            margin: auto;
+        }
+
+
+        /* =========================
+           NAVIGATION
+        ========================= */
+
+        header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            padding: 25px 0;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: block;
+        }
+
+        .logo img {
+            width: 125px;
+            height: auto;
+            display: block;
+        }
+
+        .menu {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .menu a:hover {
+            color: var(--orange-dark);
+        }
+
+
+        /* =========================
+           BUTTONS
+        ========================= */
+
+        .btn {
+            display: inline-block;
+            padding: 13px 23px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 700;
+            transition: all .2s ease;
+        }
+
+        .btn-primary {
+            background: var(--orange);
+            color: var(--dark);
+        }
+
+        .btn-primary:hover {
+            background: var(--orange-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--border);
+            background: white;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--orange);
+        }
+
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            min-height: 720px;
+            padding: 170px 0 100px;
+
+            background:
+                radial-gradient(
+                    circle at 85% 25%,
+                    rgba(244,161,58,.16),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    135deg,
+                    #FAFBFC 0%,
+                    #F3F5F6 100%
+                );
+
+            overflow: hidden;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 70px;
+        }
+
+        .hero h1 {
+            font-size: clamp(42px, 5vw, 64px);
+            line-height: 1.08;
+            letter-spacing: -2.5px;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 span {
+            color: var(--orange-dark);
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--muted);
+            max-width: 520px;
+            margin-bottom: 35px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+
+        /* =========================
+           APPLICATION PREVIEW
+        ========================= */
+
+        .app-preview {
+            background: white;
+            border-radius: 20px;
+            padding: 14px;
+
+            box-shadow:
+                0 25px 60px rgba(32,42,51,.14);
+
+            transform: rotate(1.5deg);
+        }
+
+        .app-window {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .app-top {
+            height: 44px;
+            background: #FAFAFA;
+            border-bottom: 1px solid var(--border);
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 15px;
+            gap: 7px;
+        }
+
+        .dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #D8DDE1;
+        }
+
+        .app-content {
+            display: grid;
+            grid-template-columns: 155px 1fr;
+            min-height: 350px;
+        }
+
+        .sidebar {
+            background: #F5F6F7;
+            padding: 22px 14px;
+        }
+
+        .sidebar-logo {
+            font-size: 17px;
+            font-weight: 800;
+            margin-bottom: 25px;
+        }
+
+        .sidebar-logo span {
+            color: var(--orange);
+        }
+
+        .side-item {
+            padding: 9px 10px;
+            margin-bottom: 4px;
+
+            border-radius: 7px;
+
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .side-item.active {
+            background: #FFF0DC;
+            color: var(--dark);
+            font-weight: 700;
+        }
+
+        .dashboard {
+            padding: 25px;
+        }
+
+        .dashboard h3 {
+            margin-bottom: 20px;
+            font-size: 19px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .card {
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            padding: 14px;
+        }
+
+        .card small {
+            color: var(--muted);
+            font-size: 9px;
+        }
+
+        .card strong {
+            display: block;
+            font-size: 22px;
+            margin-top: 3px;
+        }
+
+        .chart {
+            position: relative;
+            margin-top: 15px;
+            height: 140px;
+
+            border-radius: 9px;
+
+            background:
+                linear-gradient(
+                    to bottom,
+                    transparent 24%,
+                    #EDF0F2 25%,
+                    transparent 26%,
+                    transparent 49%,
+                    #EDF0F2 50%,
+                    transparent 51%,
+                    transparent 74%,
+                    #EDF0F2 75%,
+                    transparent 76%
+                );
+        }
+
+        .chart::after {
+            content: "";
+
+            position: absolute;
+            left: 10%;
+            right: 10%;
+            top: 30%;
+            height: 2px;
+
+            background: var(--orange);
+
+            transform: rotate(-8deg);
+        }
+
+
+        /* =========================
+           FEATURES
+        ========================= */
+
+        .features {
+            padding: 110px 0;
+        }
+
+        .section-title {
+            max-width: 650px;
+            margin: 0 auto 60px;
+            text-align: center;
+        }
+
+        .section-title h2 {
+            font-size: 40px;
+            line-height: 1.2;
+            letter-spacing: -1.5px;
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: var(--muted);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .feature {
+            padding: 30px;
+
+            border: 1px solid var(--border);
+            border-radius: 16px;
+
+            transition: all .2s ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 15px 35px rgba(32,42,51,.08);
+        }
+
+        .icon {
+            width: 50px;
+            height: 50px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: #FFF1DE;
+
+            font-size: 22px;
+
+            margin-bottom: 20px;
+        }
+
+        .feature h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .feature p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           ABOUT
+        ========================= */
+
+        .about {
+            padding: 100px 0;
+            background: var(--light);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 80px;
+        }
+
+        .about h2 {
+            font-size: 40px;
+            line-height: 1.2;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+
+        .about p {
+            color: var(--muted);
+            margin-bottom: 15px;
+        }
+
+        .about-card {
+            background: white;
+            border-radius: 20px;
+            padding: 45px;
+
+            box-shadow:
+                0 20px 50px rgba(32,42,51,.08);
+        }
+
+        .about-card .big-number {
+            font-size: 60px;
+            font-weight: 800;
+            line-height: 1;
+            color: var(--orange);
+            margin-bottom: 10px;
+        }
+
+
+        /* =========================
+           CTA
+        ========================= */
+
+        .cta {
+            padding: 100px 0;
+        }
+
+        .cta-box {
+            position: relative;
+            overflow: hidden;
+
+            background: var(--dark);
+            color: white;
+
+            border-radius: 25px;
+
+            padding: 70px;
+
+            text-align: center;
+        }
+
+        .cta-box::after {
+            content: "toukan";
+
+            position: absolute;
+
+            right: -30px;
+            bottom: -45px;
+
+            font-size: 110px;
+            font-weight: 800;
+
+            color: white;
+            opacity: .04;
+        }
+
+        .cta h2 {
+            font-size: 38px;
+            margin-bottom: 15px;
+        }
+
+        .cta p {
+            color: #C8CED3;
+            margin-bottom: 30px;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 35px 0;
+
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .menu {
+                display: none;
+            }
+
+            .hero {
+                padding-top: 130px;
+            }
+
+            .hero-grid,
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+
+            .app-preview {
+                transform: none;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-box {
+                padding: 50px 25px;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+        }
+
+    </style>
 </head>
+
+
 <body>
-    <div class="text-center">
-        <img src="./Logo Toukan.jpg" class="w-50 p-3" alt="logo Toukan">
-        <h1>Bienvenue sur toukan.ch</h1>
-        <p>Ce site est actuellement en construction.<br/>N'hésitez pas à venir le visiter prochainement!</p>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header>
+
+    <div class="container">
+
+        <nav>
+
+            <a href="#" class="logo">
+                <img src="logo-toukan.png" alt="Toukan">
+            </a>
+
+            <div class="menu">
+
+                <a href="#fonctionnalites">
+                    Fonctionnalités
+                </a>
+
+                <a href="#apropos">
+                    À propos
+                </a>
+
+                <a href="#contact">
+                    Contact
+                </a>
+
+                <a href="#contact" class="btn btn-primary">
+                    Demander une démo
+                </a>
+
+            </div>
+
+        </nav>
+
     </div>
+
+</header>
+
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+
+    <div class="container">
+
+        <div class="hero-grid">
+
+
+            <div>
+
+                <h1>
+                    La gestion des places,
+                    <span>simplement.</span>
+                </h1>
+
+                <p>
+                    Toukan simplifie la gestion quotidienne des structures
+                    d'accueil de l'enfance. Enfants, groupes, fréquentations
+                    et places disponibles, tout au même endroit.
+                </p>
+
+                <div class="hero-buttons">
+
+                    <a href="#contact" class="btn btn-primary">
+                        Découvrir Toukan
+                    </a>
+
+                    <a href="#fonctionnalites"
+                       class="btn btn-outline">
+                        Les fonctionnalités
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- Aperçu du logiciel -->
+
+            <div class="app-preview">
+
+                <div class="app-window">
+
+                    <div class="app-top">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+
+
+                    <div class="app-content">
+
+
+                        <aside class="sidebar">
+
+                            <div class="sidebar-logo">
+                                tou<span>kan</span>
+                            </div>
+
+                            <div class="side-item active">
+                                Tableau de bord
+                            </div>
+
+                            <div class="side-item">
+                                Enfants
+                            </div>
+
+                            <div class="side-item">
+                                Groupes
+                            </div>
+
+                            <div class="side-item">
+                                Fréquentations
+                            </div>
+
+                            <div class="side-item">
+                                Places disponibles
+                            </div>
+
+                        </aside>
+
+
+                        <main class="dashboard">
+
+                            <h3>
+                                Tableau de bord
+                            </h3>
+
+
+                            <div class="cards">
+
+                                <div class="card">
+                                    <small>Enfants</small>
+                                    <strong>128</strong>
+                                </div>
+
+                                <div class="card">
+                                    <small>Places</small>
+                                    <strong>156</strong>
+                                </div>
+
+                                <div class="card">
+                                    <small>Occupation</small>
+                                    <strong>82%</strong>
+                                </div>
+
+                            </div>
+
+
+                            <div class="chart"></div>
+
+                        </main>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     FONCTIONNALITES
+========================= -->
+
+<section class="features" id="fonctionnalites">
+
+    <div class="container">
+
+        <div class="section-title">
+
+            <h2>
+                Tout ce qu'il vous faut.
+            </h2>
+
+            <p>
+                Une solution pensée pour les besoins quotidiens
+                des structures d'accueil de l'enfance.
+            </p>
+
+        </div>
+
+
+        <div class="feature-grid">
+
+
+            <div class="feature">
+
+                <div class="icon">👧</div>
+
+                <h3>
+                    Gestion des enfants
+                </h3>
+
+                <p>
+                    Centralisez les informations des enfants
+                    et simplifiez leur suivi.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="icon">👥</div>
+
+                <h3>
+                    Gestion des groupes
+                </h3>
+
+                <p>
+                    Organisez vos groupes et visualisez
+                    leur capacité en un coup d'œil.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="icon">📅</div>
+
+                <h3>
+                    Fréquentations
+                </h3>
+
+                <p>
+                    Gérez facilement les horaires
+                    et les fréquentations.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="icon">📊</div>
+
+                <h3>
+                    Places disponibles
+                </h3>
+
+                <p>
+                    Visualisez vos disponibilités et
+                    anticipez les besoins futurs.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="icon">📈</div>
+
+                <h3>
+                    Statistiques
+                </h3>
+
+                <p>
+                    Suivez votre taux d'occupation et
+                    analysez votre activité.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="icon">⚡</div>
+
+                <h3>
+                    Simple et intuitif
+                </h3>
+
+                <p>
+                    Une interface claire pour gagner
+                    du temps chaque jour.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     A PROPOS
+========================= -->
+
+<section class="about" id="apropos">
+
+    <div class="container">
+
+        <div class="about-grid">
+
+
+            <div>
+
+                <h2>
+                    Pensé pour le quotidien
+                    des professionnels.
+                </h2>
+
+                <p>
+                    Toukan est une solution dédiée aux structures
+                    d'accueil de l'enfance.
+                </p>
+
+                <p>
+                    Son objectif est simple : centraliser les
+                    informations et faciliter la gestion des places,
+                    afin que les équipes puissent se concentrer
+                    sur l'essentiel.
+                </p>
+
+            </div>
+
+
+            <div class="about-card">
+
+                <div class="big-number">
+                    100%
+                </div>
+
+                <strong>
+                    Pensé pour l'accueil de l'enfance
+                </strong>
+
+                <p>
+                    Une solution adaptée aux réalités du terrain
+                    et aux besoins des structures.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     CTA
+========================= -->
+
+<section class="cta" id="contact">
+
+    <div class="container">
+
+        <div class="cta-box">
+
+            <h2>
+                Découvrez Toukan.
+            </h2>
+
+            <p>
+                Simplifiez la gestion de votre structure
+                d'accueil dès aujourd'hui.
+            </p>
+
+            <a href="mailto:info@toukan.ch"
+               class="btn btn-primary">
+                Demander une démonstration
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <div class="container">
+
+        <div class="footer-inner">
+
+            <div>
+                © 2026 Toukan
+            </div>
+
+            <div>
+                Gestion des structures d'accueil de l'enfance
+            </div>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
 </body>
 </html>
