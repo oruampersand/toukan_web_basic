@@ -181,147 +181,29 @@
         /* =========================
            APPLICATION PREVIEW
         ========================= */
-
+        
         .app-preview {
-            background: white;
+            background: #ffffff;
+            padding: 14px;
             border-radius: 20px;
-            padding: 14px;
-
-            box-shadow:
-                0 25px 60px rgba(32,42,51,.14);
-
+            box-shadow: 0 25px 60px rgba(32, 42, 51, 0.14);
             transform: rotate(1.5deg);
+            transition: transform 0.3s ease,
+                        box-shadow 0.3s ease;
         }
 
-        .app-window {
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-        }
-
-        .app-top {
-            height: 44px;
-            background: #FAFAFA;
-            border-bottom: 1px solid var(--border);
-
-            display: flex;
-            align-items: center;
-
-            padding: 0 15px;
-            gap: 7px;
-        }
-
-        .dot {
-            width: 9px;
-            height: 9px;
-            border-radius: 50%;
-            background: #D8DDE1;
-        }
-
-        .app-content {
-            display: grid;
-            grid-template-columns: 155px 1fr;
-            min-height: 350px;
-        }
-
-        .sidebar {
-            background: #F5F6F7;
-            padding: 22px 14px;
-        }
-
-        .sidebar-logo {
-            font-size: 17px;
-            font-weight: 800;
-            margin-bottom: 25px;
-        }
-
-        .sidebar-logo span {
-            color: var(--orange);
-        }
-
-        .side-item {
-            padding: 9px 10px;
-            margin-bottom: 4px;
-
-            border-radius: 7px;
-
-            font-size: 11px;
-            color: var(--muted);
-        }
-
-        .side-item.active {
-            background: #FFF0DC;
-            color: var(--dark);
-            font-weight: 700;
-        }
-
-        .dashboard {
-            padding: 25px;
-        }
-
-        .dashboard h3 {
-            margin-bottom: 20px;
-            font-size: 19px;
-        }
-
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
-
-        .card {
-            border: 1px solid var(--border);
-            border-radius: 9px;
-            padding: 14px;
-        }
-
-        .card small {
-            color: var(--muted);
-            font-size: 9px;
-        }
-
-        .card strong {
+        .app-preview img {
             display: block;
-            font-size: 22px;
-            margin-top: 3px;
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
         }
 
-        .chart {
-            position: relative;
-            margin-top: 15px;
-            height: 140px;
-
-            border-radius: 9px;
-
-            background:
-                linear-gradient(
-                    to bottom,
-                    transparent 24%,
-                    #EDF0F2 25%,
-                    transparent 26%,
-                    transparent 49%,
-                    #EDF0F2 50%,
-                    transparent 51%,
-                    transparent 74%,
-                    #EDF0F2 75%,
-                    transparent 76%
-                );
-        }
-
-        .chart::after {
-            content: "";
-
-            position: absolute;
-            left: 10%;
-            right: 10%;
-            top: 30%;
-            height: 2px;
-
-            background: var(--orange);
-
-            transform: rotate(-8deg);
-        }
+        /* Petit effet au survol */
+        .app-preview:hover {
+            transform: rotate(0deg) translateY(-5px);
+            box-shadow: 0 30px 70px rgba(32, 42, 51, 0.18);
+        }        
 
 
         /* =========================
@@ -643,85 +525,8 @@
             <!-- Aperçu du logiciel -->
 
             <div class="app-preview">
-
-                <div class="app-window">
-
-                    <div class="app-top">
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                    </div>
-
-
-                    <div class="app-content">
-
-
-                        <aside class="sidebar">
-
-                            <div class="sidebar-logo">
-                                tou<span>kan</span>
-                            </div>
-
-                            <div class="side-item active">
-                                Tableau de bord
-                            </div>
-
-                            <div class="side-item">
-                                Enfants
-                            </div>
-
-                            <div class="side-item">
-                                Groupes
-                            </div>
-
-                            <div class="side-item">
-                                Fréquentations
-                            </div>
-
-                            <div class="side-item">
-                                Places disponibles
-                            </div>
-
-                        </aside>
-
-
-                        <main class="dashboard">
-
-                            <h3>
-                                Tableau de bord
-                            </h3>
-
-
-                            <div class="cards">
-
-                                <div class="card">
-                                    <small>Enfants</small>
-                                    <strong>128</strong>
-                                </div>
-
-                                <div class="card">
-                                    <small>Places</small>
-                                    <strong>156</strong>
-                                </div>
-
-                                <div class="card">
-                                    <small>Occupation</small>
-                                    <strong>82%</strong>
-                                </div>
-
-                            </div>
-
-
-                            <div class="chart"></div>
-
-                        </main>
-
-                    </div>
-
-                </div>
-
+                <img src="screencap-passage1.jpg" alt="Aperçu de l'application Toukan">
             </div>
-
         </div>
 
     </div>
