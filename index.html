@@ -393,6 +393,14 @@
             align-items: center;
         }
 
+        footer a {
+            color: var(--orange-dark)
+        }
+
+        footer a:hover {
+            color: var(--orange);
+        }
+
 
         /* =========================
            MOBILE
@@ -451,7 +459,7 @@
         <nav>
 
             <a href="#" class="logo">
-                <img src="logo-toukan.png" alt="Toukan">
+                <img src="images/logo-toukan.png" alt="Toukan">
             </a>
 
             <div class="menu">
@@ -525,7 +533,7 @@
             <!-- Aperçu du logiciel -->
 
             <div class="app-preview">
-                <img src="screencap-passage1.jpg" alt="Aperçu de l'application Toukan">
+                <img src="images/toukan-preview.jpg" alt="Aperçu de l'application Toukan">
             </div>
         </div>
 
@@ -742,7 +750,7 @@
                 d'accueil dès aujourd'hui.
             </p>
 
-            <a href="mailto:info@toukan.ch"
+            <a href="mailto:toukan@nanou.ch"
                class="btn btn-primary">
                 Demander une démonstration
             </a>
@@ -766,11 +774,14 @@
         <div class="footer-inner">
 
             <div>
-                © 2026 Toukan
+                © 
+                <span id="currentyear">
+                    <script>document.getElementById('currentyear').appendChild(document.createTextNode(new Date().getFullYear()))</script>
+                </span>Toukan
             </div>
 
             <div>
-                Gestion des structures d'accueil de l'enfance
+                Proposé par <a href="https://nanou.ch" target="_blank">Nanou Solutions</a>
             </div>
 
         </div>
